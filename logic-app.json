@@ -1,0 +1,93 @@
+{
+    "definition": {
+        "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+        "actions": {
+            "HTTP": {
+                "inputs": {
+                    "method": "GET",
+                    "uri": "https://coronavirus-tracker-api.herokuapp.com/v2/latest"
+                },
+                "runAfter": {},
+                "type": "Http"
+            },
+            "Parse_JSON": {
+                "inputs": {
+                    "content": "@body('HTTP')",
+                    "schema": {
+                        "properties": {
+                            "latest": {
+                                "properties": {
+                                    "confirmed": {
+                                        "type": "integer"
+                                    },
+                                    "deaths": {
+                                        "type": "integer"
+                                    },
+                                    "recovered": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "type": "object"
+                    }
+                },
+                "runAfter": {
+                    "HTTP": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "ParseJson"
+            },
+            "Post_a_tweet": {
+                "inputs": {
+                    "host": {
+                        "connection": {
+                            "name": "@parameters('$connections')['twitter_1']['connectionId']"
+                        }
+                    },
+                    "method": "post",
+                    "path": "/posttweet",
+                    "queries": {
+                        "tweetText": "Latest Global #COVID19 cases => Confirmed: @{body('Parse_JSON')?['latest']?['confirmed']} , Recovered: @{body('Parse_JSON')?['latest']?['recovered']} , Deaths: @{body('Parse_JSON')?['latest']?['deaths']} #StayHome"
+                    }
+                },
+                "runAfter": {
+                    "Parse_JSON": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "ApiConnection"
+            }
+        },
+        "contentVersion": "1.0.0.0",
+        "outputs": {},
+        "parameters": {
+            "$connections": {
+                "defaultValue": {},
+                "type": "Object"
+            }
+        },
+        "triggers": {
+            "Recurrence": {
+                "recurrence": {
+                    "frequency": "Minute",
+                    "interval": 30
+                },
+                "type": "Recurrence"
+            }
+        }
+    },
+    "parameters": {
+        "$connections": {
+            "value": {
+                "twitter_1": {
+                    "connectionId": "/subscriptions/9057c309-3427-4108-b5da-b4ed0faa2873/resourceGroups/covid19/providers/Microsoft.Web/connections/twitter",
+                    "connectionName": "twitter",
+                    "id": "/subscriptions/9057c309-3427-4108-b5da-b4ed0faa2873/providers/Microsoft.Web/locations/canadacentral/managedApis/twitter"
+                }
+            }
+        }
+    }
+}

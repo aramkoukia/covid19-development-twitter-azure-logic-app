@@ -48,7 +48,7 @@
                     "method": "post",
                     "path": "/posttweet",
                     "queries": {
-                        "tweetText": "Latest Global #COVID19 cases => Confirmed: @{body('Parse_JSON')?['latest']?['cases']} , Recovered: @{body('Parse_JSON')?['latest']?['recovered']} , Deaths: @{body('Parse_JSON')?['latest']?['deaths']} #StayHome"
+                        "tweetText": "Latest Global #COVID19 cases => Confirmed: @{body('Parse_JSON')?['cases']} , Recovered: @{body('Parse_JSON')?['recovered']} , Deaths: @{body('Parse_JSON')?['deaths']} #StayHome"
                     }
                 },
                 "runAfter": {

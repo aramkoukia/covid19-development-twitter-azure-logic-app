@@ -5,7 +5,7 @@
             "HTTP": {
                 "inputs": {
                     "method": "GET",
-                    "uri": "https://coronavirus-tracker-api.herokuapp.com/v2/latest"
+                    "uri": "https://corona.lmao.ninja/all"
                 },
                 "runAfter": {},
                 "type": "Http"
@@ -15,19 +15,17 @@
                     "content": "@body('HTTP')",
                     "schema": {
                         "properties": {
-                            "latest": {
-                                "properties": {
-                                    "confirmed": {
-                                        "type": "integer"
-                                    },
-                                    "deaths": {
-                                        "type": "integer"
-                                    },
-                                    "recovered": {
-                                        "type": "integer"
-                                    }
-                                },
-                                "type": "object"
+                            "cases": {
+                                "type": "integer"
+                            },
+                            "deaths": {
+                                "type": "integer"
+                            },
+                            "recovered": {
+                                "type": "integer"
+                            },
+                            "updated": {
+                                "type": "integer"
                             }
                         },
                         "type": "object"
@@ -50,7 +48,7 @@
                     "method": "post",
                     "path": "/posttweet",
                     "queries": {
-                        "tweetText": "Latest Global #COVID19 cases => Confirmed: @{body('Parse_JSON')?['latest']?['confirmed']} , Recovered: @{body('Parse_JSON')?['latest']?['recovered']} , Deaths: @{body('Parse_JSON')?['latest']?['deaths']} #StayHome"
+                        "tweetText": "Latest Global #COVID19 cases => Confirmed: @{body('Parse_JSON')?['latest']?['cases']} , Recovered: @{body('Parse_JSON')?['latest']?['recovered']} , Deaths: @{body('Parse_JSON')?['latest']?['deaths']} #StayHome"
                     }
                 },
                 "runAfter": {

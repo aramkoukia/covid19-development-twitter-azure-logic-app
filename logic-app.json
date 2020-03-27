@@ -2,6 +2,34 @@
     "definition": {
         "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
         "actions": {
+            "Delay": {
+                "inputs": {
+                    "interval": {
+                        "count": 8,
+                        "unit": "Minute"
+                    }
+                },
+                "runAfter": {
+                    "Post_a_tweet": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "wait"
+            },
+            "Delay_2": {
+                "inputs": {
+                    "interval": {
+                        "count": 7,
+                        "unit": "Minute"
+                    }
+                },
+                "runAfter": {
+                    "Post_a_tweet_3": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "wait"
+            },
             "HTTP": {
                 "inputs": {
                     "method": "GET",
@@ -16,7 +44,7 @@
                     "uri": "https://corona.lmao.ninja/countries/Canada"
                 },
                 "runAfter": {
-                    "Post_a_tweet": [
+                    "Delay_2": [
                         "Succeeded"
                     ]
                 },
@@ -28,7 +56,7 @@
                     "uri": "https://corona.lmao.ninja/countries/US"
                 },
                 "runAfter": {
-                    "Post_a_tweet_2": [
+                    "Delay": [
                         "Succeeded"
                     ]
                 },
@@ -273,7 +301,7 @@
             "Recurrence": {
                 "recurrence": {
                     "frequency": "Minute",
-                    "interval": 30
+                    "interval": 90
                 },
                 "type": "Recurrence"
             }
